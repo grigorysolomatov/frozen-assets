@@ -6,12 +6,12 @@ const TABS = [
     id: 'investments',
     label: 'Investments',
     cards: [
-      { name: 'Energy',         img: 'images/energy.webp' },
-      { name: 'Materials',      img: 'images/materials.webp' },
-      { name: 'Consumer Goods', img: 'images/consumer-goods.webp' },
-      { name: 'Technology',     img: 'images/technology.webp' },
-      { name: 'Real Estate',    img: 'images/real-estate.webp' },
-      { name: 'Crime',          img: 'images/crime.webp' },
+      { name: 'Energy',      img: 'images/energy.webp' },
+      { name: 'Materials',   img: 'images/materials.webp' },
+      { name: 'Politics',    img: 'images/politics.webp' },
+      { name: 'Technology',  img: 'images/technology.webp' },
+      { name: 'Real Estate', img: 'images/real-estate.webp' },
+      { name: 'Crime',       img: 'images/crime.webp' },
     ],
   },
 ];

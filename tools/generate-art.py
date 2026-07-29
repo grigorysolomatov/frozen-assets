@@ -56,15 +56,18 @@ CARDS = {
         "sceptre, a heavy fur mantle over its shoulders. Cut quarry walls step away behind it. "
         "Composition wide, seated and regal."
     ),
-    "consumer-goods": (
-        "A dapper penguin merchant prince in a waistcoat standing behind a polished counter, "
-        "flippers spread wide in a proprietary gesture presenting tall shelves of identical "
-        "boxed goods receding behind it. Frontal, symmetrical, shopkeeper-emperor composition."
+    "politics": (
+        "A penguin statesman in a sash of office and a row of medals, standing at a tall ornate "
+        "rostrum, one flipper raised mid-oration and the other gripping the lectern, addressing "
+        "a dense crowd of small upturned penguin faces below. Heavy draped banners hang behind. "
+        "Viewed slightly from below, ceremonial and commanding."
     ),
     "technology": (
-        "Profile view of a lean penguin financier in a high-collared coat, flippers clasped "
-        "behind its back, gazing up at one large floating schematic diagram of fine geometric "
-        "linework. Cool, detached, visionary. Sparse composition with a great deal of empty space."
+        "Three-quarter view of a penguin magnate in a sharp double-breasted suit standing in a "
+        "vast cathedral-like machine hall, one flipper resting on the brass lever of an enormous "
+        "apparatus of dials, gauges and cables. Rows of tall machine cabinets recede into the "
+        "distance behind it. Looking directly at the viewer, proprietary and assured. Solid "
+        "machinery and deep perspective, concrete rather than abstract."
     ),
     "real-estate": (
         "Seen from below, a penguin magnate in a long fur-collared greatcoat stands at the stone "
