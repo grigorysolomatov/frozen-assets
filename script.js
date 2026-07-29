@@ -1,17 +1,22 @@
 // ── Content ──
+// Which art set to show. Both live under images/ and cover the same six pools:
+//   'modern'  - contemporary settings, flat editorial illustration
+//   'classic' - gilded-age settings, screenprint linework
+const ART = 'modern';
+
 // Add a tab by appending here. `cards` may be a number (that many blank cards)
-// or an array of { name, img } once real content exists.
+// or an array of { name, file } once real content exists.
 const TABS = [
   {
     id: 'investments',
     label: 'Investments',
     cards: [
-      { name: 'Energy',      img: 'images/energy.webp' },
-      { name: 'Media',       img: 'images/media.webp' },
-      { name: 'Politics',    img: 'images/politics.webp' },
-      { name: 'Technology',  img: 'images/technology.webp' },
-      { name: 'Real Estate', img: 'images/real-estate.webp' },
-      { name: 'Crime',       img: 'images/crime.webp' },
+      { name: 'Energy',      file: 'energy.webp' },
+      { name: 'Media',       file: 'media.webp' },
+      { name: 'Politics',    file: 'politics.webp' },
+      { name: 'Technology',  file: 'technology.webp' },
+      { name: 'Real Estate', file: 'real-estate.webp' },
+      { name: 'Crime',       file: 'crime.webp' },
     ],
   },
 ];
@@ -32,7 +37,7 @@ function renderCards(tab) {
     const el = document.createElement('article');
     el.className = 'card' + (card ? '' : ' card-blank');
     el.innerHTML = card
-      ? `<img class="card-art" src="${card.img}" alt="${card.name}" loading="lazy">
+      ? `<img class="card-art" src="images/${ART}/${card.file}" alt="${card.name}" loading="lazy">
          <h3 class="card-name">${card.name}</h3>`
       : `<div class="card-inner"><span class="card-mark">❄</span></div>`;
     gridEl.appendChild(el);
