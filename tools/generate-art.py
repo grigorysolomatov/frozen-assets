@@ -56,6 +56,13 @@ CARDS = {
         "sceptre, a heavy fur mantle over its shoulders. Cut quarry walls step away behind it. "
         "Composition wide, seated and regal."
     ),
+    "media": (
+        "A penguin press baron standing astride the deck of a great rotary printing press, "
+        "holding a freshly printed newspaper aloft in one flipper, sheets of newsprint streaming "
+        "off the rollers and swirling through the air all around him. The newspapers show only "
+        "abstract grey halftone bars and blocks, never any lettering. Dynamic diagonal "
+        "composition full of flying paper, viewed from slightly below."
+    ),
     "politics": (
         "A penguin statesman in a sash of office and a row of medals, standing at a tall ornate "
         "rostrum, one flipper raised mid-oration and the other gripping the lectern, addressing "

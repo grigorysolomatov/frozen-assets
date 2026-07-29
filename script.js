@@ -7,7 +7,7 @@ const TABS = [
     label: 'Investments',
     cards: [
       { name: 'Energy',      img: 'images/energy.webp' },
-      { name: 'Materials',   img: 'images/materials.webp' },
+      { name: 'Media',       img: 'images/media.webp' },
       { name: 'Politics',    img: 'images/politics.webp' },
       { name: 'Technology',  img: 'images/technology.webp' },
       { name: 'Real Estate', img: 'images/real-estate.webp' },
