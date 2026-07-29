@@ -33,7 +33,6 @@ function renderCards(tab) {
     el.className = 'card' + (card ? '' : ' card-blank');
     el.innerHTML = card
       ? `<img class="card-art" src="${card.img}" alt="${card.name}" loading="lazy">
-         <div class="card-veil"></div>
          <h3 class="card-name">${card.name}</h3>`
       : `<div class="card-inner"><span class="card-mark">❄</span></div>`;
     gridEl.appendChild(el);

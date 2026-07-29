@@ -136,6 +136,8 @@ main {
 
 .card {
   position: relative;
+  display: flex;
+  flex-direction: column;
   aspect-ratio: 5 / 7;
   background: linear-gradient(160deg, var(--surface2) 0%, var(--surface) 100%);
   border: 1px solid var(--border);
@@ -144,42 +146,31 @@ main {
   transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
 }
 
-/* Full-bleed generated art */
+/* Art fills the card above the name plate */
 .card-art {
-  position: absolute;
-  inset: 0;
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  height: 100%;
   object-fit: cover;
+  object-position: center 42%;
   display: block;
   transition: transform 0.4s ease;
 }
 
-.card:hover .card-art { transform: scale(1.05); }
+.card:hover .card-art { transform: scale(1.04); }
 
-/* Gradient veil so the name stays legible over any art */
-.card-veil {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top,
-    rgba(6, 10, 20, 0.92) 0%,
-    rgba(6, 10, 20, 0.55) 22%,
-    rgba(6, 10, 20, 0) 48%);
-  pointer-events: none;
-}
-
+/* Solid name plate, in keeping with the flat ink-and-fill art */
 .card-name {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 0 0.9rem 0.95rem;
-  font-size: 1.02rem;
+  flex: none;
+  padding: 0.6rem 0.7rem 0.65rem;
+  font-size: 0.92rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
   text-align: center;
-  color: #f0f9ff;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-  z-index: 2;
+  color: #f4efe2;
+  background: #16232e;
+  border-top: 2px solid rgba(125, 211, 252, 0.35);
 }
 
 .card:hover {
