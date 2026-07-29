@@ -1,8 +1,19 @@
 // ── Content ──
 // Add a tab by appending here. `cards` may be a number (that many blank cards)
-// or an array of { title, text } once real content exists.
+// or an array of { name, img } once real content exists.
 const TABS = [
-  { id: 'investments', label: 'Investments', cards: 6 },
+  {
+    id: 'investments',
+    label: 'Investments',
+    cards: [
+      { name: 'Energy',         img: 'images/energy.webp' },
+      { name: 'Materials',      img: 'images/materials.webp' },
+      { name: 'Consumer Goods', img: 'images/consumer-goods.webp' },
+      { name: 'Technology',     img: 'images/technology.webp' },
+      { name: 'Real Estate',    img: 'images/real-estate.webp' },
+      { name: 'Crime',          img: 'images/crime.webp' },
+    ],
+  },
 ];
 
 // ── Rendering ──
@@ -21,10 +32,9 @@ function renderCards(tab) {
     const el = document.createElement('article');
     el.className = 'card' + (card ? '' : ' card-blank');
     el.innerHTML = card
-      ? `<div class="card-inner">
-           <h3>${card.title}</h3>
-           <p>${card.text}</p>
-         </div>`
+      ? `<img class="card-art" src="${card.img}" alt="${card.name}" loading="lazy">
+         <div class="card-veil"></div>
+         <h3 class="card-name">${card.name}</h3>`
       : `<div class="card-inner"><span class="card-mark">❄</span></div>`;
     gridEl.appendChild(el);
   });
