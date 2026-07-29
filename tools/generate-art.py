@@ -1,88 +1,99 @@
-"""Generate card art in the Frozen Assets house style.
+"""Generate Frozen Assets card art in the house style.
 
 Usage:
-    set -a && . ./.env && set +a && python3 tools/generate-art.py
+    set -a && . ./.env && set +a
+    python3 tools/generate-art.py <card-name> [output-dir]
 
-Writes 1024x1536 PNG masters to images/originals/. To publish, downscale
-to the web-sized WebP the site actually loads:
+Writes a 1024x1536 PNG master (~2 min per card). Default output is
+images/originals/. Downscale to the WebP the site actually serves:
 
-    for f in images/originals/*.png; do
-      ffmpeg -y -i "$f" -vf scale=700:-1 -c:v libwebp -quality 82 \
-        "images/$(basename "${f%.png}").webp"
-    done
+    ffmpeg -y -i images/originals/NAME.png -vf scale=700:-1 \
+      -c:v libwebp -quality 84 images/NAME.webp
 
-Leave STYLE and GREED untouched when adding cards -- they are what makes
-the set read as one deck. Only append to CARDS.
+Leave STYLE and ATTITUDE untouched when adding cards -- together they are
+what make the set read as one deck, and what keep it from looking like a
+generic AI render. Give each new card its own camera angle and framing;
+six similar poses read as repetitive. Only append to CARDS.
 """
-import base64, json, os, urllib.request, time
+import base64, json, os, sys, urllib.request, time
 
 KEY = os.environ["OPENAI_API_KEY"]
-OUT = os.path.join(os.path.dirname(__file__), "..", "images", "originals")
+_DEFAULT_OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "images", "originals")
+OUT = sys.argv[2] if len(sys.argv) > 2 else _DEFAULT_OUT
 os.makedirs(OUT, exist_ok=True)
 
-# Locked style + framing so all six read as one set.
+# Hand-drawn and graphic, deliberately NOT the glossy AI-render look.
 STYLE = (
-    " Style: whimsical hand-drawn storybook cartoon illustration. Bold uneven black ink "
-    "outlines of varying weight, flat muted color fills with almost no shading or gradient, "
-    "simple expressive character with small round dot eyes, charming and a little goofy. "
-    "Limited palette: pale icy blue, cream, charcoal, muted teal, one warm amber-gold accent. "
-    "Single centered character standing on a simple snow ground line against a flat pale "
-    "blue sky, plain minimal background with subtle paper grain. Bold clear silhouette, "
-    "generous negative space, iconic and simple like a board-game character card. Folk-art "
-    "picture-book quality, naive and playful, not realistic, not painterly, not 3D. "
+    " Style: bold hand-drawn editorial illustration, like a vintage screenprinted poster "
+    "or a classic engraved advertisement. Confident tapered ink linework of varying weight, "
+    "flat opaque color fills, visible halftone dots and paper grain, hand-printed texture "
+    "with slight ink misregistration. Absolutely not photorealistic, not a digital painting, "
+    "not airbrushed, no soft glowing gradients, no 3D render, no glossy highlights. "
+    "Restrained palette: deep charcoal, ice blue, bone cream, muted teal, antique gold. "
+    "Strong graphic composition, deliberate negative space, bold readable silhouette. "
+    "Elegant, stylish and clearly drawn by a human illustrator. "
     "No text, no words, no letters, no numbers, no logos."
 )
 
-GREED = (
-    " The penguin is consumed by gleeful greed: a wide toothy money-hungry grin, gleaming "
-    "wide eyes, grabby flippers clutching its treasure possessively to its chest, gold coins "
-    "spilling and tumbling around its feet."
+# Powerful and self-regarding, not petty or goofy.
+ATTITUDE = (
+    " The penguin is a powerful, self-important magnate who regards its wealth as dominion "
+    "rather than loot: upright commanding posture, chin raised, half-lidded confident eyes, "
+    "a faint superior smirk. Never a wide toothy grin, never cute, never goofy, never "
+    "clutching things to its chest. Immaculately dressed, poised, dignified and imposing."
 )
 
-CARDS = [
-    ("energy",
-     "A fat smug penguin tycoon in a tiny black top hat and monocle with a cigar clamped in "
-     "its beak, hugging an oil barrel greedily while black oil gushes and gold coins pour out "
-     "of it. One simple oil derrick silhouette behind."),
-    ("materials",
-     "A stout penguin in a small mining helmet, arms crammed full of glittering gemstones and "
-     "gold ingots pressed to its chest, a tiny pickaxe tucked under one flipper, sitting on a "
-     "heaping mound of ore and jewels."),
-    ("consumer-goods",
-     "A plump penguin buried under an absurd teetering stack of shopping bags and wrapped gift "
-     "boxes, clutching even more to its chest, a tiny shop awning behind it."),
-    ("technology",
-     "A sleek penguin in a small black turtleneck cradling a single glowing gadget like a "
-     "precious egg, one simple floating holographic screen beside it, two small server towers "
-     "behind."),
-    ("real-estate",
-     "A pompous penguin in a fur-collared coat hugging a tiny ice-palace mansion to its chest "
-     "like a toy, a rolled deed scroll under one flipper, two simple frozen towers behind."),
-    ("crime",
-     "A shifty penguin in a small black fedora and pinstripe scarf, cracking open a briefcase "
-     "overflowing with cash and gold bars, giving a sly sidelong greedy smirk, a stack of gold "
-     "bars at its feet."),
-]
+CARDS = {
+    "energy": (
+        "Low heroic angle looking up at a heavyset penguin oil baron in a black frock coat and "
+        "top hat, one webbed foot planted on an oil barrel, a cigar in its beak, surveying the "
+        "viewer with disdain. Behind and below, the iron lattice of a derrick and a distant "
+        "flare. Composition tall and monumental."
+    ),
+    "materials": (
+        "Three-quarter view of a broad penguin industrialist seated on a throne hewn from raw "
+        "ore and crystal, one flipper resting on the haft of a pickaxe held upright like a "
+        "sceptre, a heavy fur mantle over its shoulders. Cut quarry walls step away behind it. "
+        "Composition wide, seated and regal."
+    ),
+    "consumer-goods": (
+        "A dapper penguin merchant prince in a waistcoat standing behind a polished counter, "
+        "flippers spread wide in a proprietary gesture presenting tall shelves of identical "
+        "boxed goods receding behind it. Frontal, symmetrical, shopkeeper-emperor composition."
+    ),
+    "technology": (
+        "Profile view of a lean penguin financier in a high-collared coat, flippers clasped "
+        "behind its back, gazing up at one large floating schematic diagram of fine geometric "
+        "linework. Cool, detached, visionary. Sparse composition with a great deal of empty space."
+    ),
+    "real-estate": (
+        "Seen from below, a penguin magnate in a long fur-collared greatcoat stands at the stone "
+        "parapet of a high tower, one flipper on the railing, coat caught by the wind, looking "
+        "out over a city of frozen spires far below. Sweeping and territorial."
+    ),
+    "crime": (
+        "A penguin crime patriarch sunk deep in a buttoned leather armchair in near darkness, "
+        "flipper-tips steepled, lit from one side by a single lamp, utterly calm. Heavy shadow, "
+        "tight intimate framing, most of the frame in shadow."
+    ),
+}
 
-for name, subject in CARDS:
-    t0 = time.time()
-    body = json.dumps({
-        "model": "gpt-image-2",
-        "prompt": subject + GREED + STYLE,
-        "size": "1024x1536",
-        "quality": "high",
-        "n": 1,
-    }).encode()
-    req = urllib.request.Request(
-        "https://api.openai.com/v1/images/generations", data=body,
-        headers={"Authorization": f"Bearer {KEY}", "Content-Type": "application/json"},
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=600) as r:
-            d = json.load(r)
-        p = os.path.join(OUT, f"{name}.png")
-        open(p, "wb").write(base64.b64decode(d["data"][0]["b64_json"]))
-        print(f"OK   {name:16s} {os.path.getsize(p)//1024:5d} KB  {time.time()-t0:5.1f}s", flush=True)
-    except Exception as e:
-        print(f"FAIL {name:16s} {e}", flush=True)
-print("DONE", flush=True)
+name = sys.argv[1]
+subject = CARDS[name]
+body = json.dumps({
+    "model": "gpt-image-2",
+    "prompt": subject + ATTITUDE + STYLE,
+    "size": "1024x1536",
+    "quality": "high",
+    "n": 1,
+}).encode()
+req = urllib.request.Request(
+    "https://api.openai.com/v1/images/generations", data=body,
+    headers={"Authorization": f"Bearer {KEY}", "Content-Type": "application/json"},
+)
+t0 = time.time()
+with urllib.request.urlopen(req, timeout=600) as r:
+    d = json.load(r)
+p = os.path.join(OUT, f"{name}.png")
+open(p, "wb").write(base64.b64decode(d["data"][0]["b64_json"]))
+print(f"OK {name} {os.path.getsize(p)//1024} KB {time.time()-t0:.0f}s", flush=True)

@@ -138,7 +138,6 @@ main {
   position: relative;
   display: flex;
   flex-direction: column;
-  aspect-ratio: 5 / 7;
   background: linear-gradient(160deg, var(--surface2) 0%, var(--surface) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -146,13 +145,11 @@ main {
   transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
 }
 
-/* Art fills the card above the name plate */
+/* Art shown at its native 2:3 so no composition gets cropped */
 .card-art {
-  flex: 1;
-  min-height: 0;
   width: 100%;
+  aspect-ratio: 2 / 3;
   object-fit: cover;
-  object-position: center 42%;
   display: block;
   transition: transform 0.4s ease;
 }
